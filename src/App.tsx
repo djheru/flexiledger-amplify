@@ -89,8 +89,8 @@ export function Layout() {
       <p>
         This example demonstrates some of the core features of React Router
         including nested &lt;Route&gt;s, &lt;Outlet&gt;s, &lt;Link&gt;s, and
-        using a "*" route (aka &quot;splat route&quot;) to render a "not found"
-        page when someone visits an unrecognized URL.
+        using a &quot;*&quot; route (aka &quot;splat route&quot;) to render a
+        &quot;not found&quot; page when someone visits an unrecognized URL.
       </p>
 
       <nav>
@@ -128,8 +128,9 @@ export function Layout() {
         separate critical and lazily loaded data in your loaders.
       </p>
       <p>
-        We've introduced some fake async-aspects of routing here, so Keep an eye
-        on the top-right hand corner to see when we're actively navigating.
+        We&apos;ve introduced some fake async-aspects of routing here, so Keep
+        an eye on the top-right hand corner to see when we&apos;re actively
+        navigating.
       </p>
       <hr />
       <Outlet />
