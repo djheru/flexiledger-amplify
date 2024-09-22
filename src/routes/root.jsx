@@ -57,7 +57,7 @@ export default function Root() {
             />
             <div id="search-spinner" aria-hidden hidden={!isSearching} />
             <div className="sr-only" aria-live="polite"></div>
-          </Form>dd
+          </Form>
           <Form method="post">
             <button type="submit">New</button>
           </Form>
