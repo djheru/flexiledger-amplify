@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 // import 'tailwindcss/tailwind.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ErrorPage from './pages/error';
+import Index from './routes';
 import Contact, { loader as contactLoader } from './routes/contact';
 import { action as destroyAction } from './routes/destroy';
 import EditContact, { action as editAction } from './routes/edit';
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
     action: rootAction,
     loader: rootLoader,
     children: [
+      {
+        index: true,
+        element: <Index />
+      },
       {
         path: 'contacts/:contactId',
         element: <Contact />,
