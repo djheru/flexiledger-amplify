@@ -1,400 +1,147 @@
-import * as React from 'react';
-import type { ActionFunctionArgs, LoaderFunctionArgs } from 'react-router-dom';
-import {
-  Await,
-  createBrowserRouter,
-  defer,
-  Form,
-  Link,
-  Outlet,
-  RouterProvider,
-  useAsyncError,
-  useAsyncValue,
-  useFetcher,
-  useFetchers,
-  useLoaderData,
-  useNavigation,
-  useParams,
-  useRevalidator,
-  useRouteError
-} from 'react-router-dom';
-
-import type { Todos } from './todos';
-import { addTodo, deleteTodo, getTodos } from './todos';
-
-import './index.css';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    Component: Layout,
-    children: [
-      {
-        index: true,
-        loader: homeLoader,
-        Component: Home
-      },
-      {
-        path: 'todos',
-        action: todosAction,
-        loader: todosLoader,
-        Component: TodosList,
-        ErrorBoundary: TodosBoundary,
-        children: [
-          {
-            path: ':id',
-            loader: todoLoader,
-            Component: Todo
-          }
-        ]
-      },
-      {
-        path: 'deferred',
-        loader: deferredLoader,
-        Component: DeferredPage
-      }
-    ]
-  }
-]);
-
-if (import.meta.hot) {
-  import.meta.hot.dispose(() => router.dispose());
-}
+import type { RouteObject } from 'react-router-dom';
+import { Link, Outlet, useParams, useRoutes } from 'react-router-dom';
 
 export default function App() {
-  return <RouterProvider router={router} fallbackElement={<Fallback />} />;
-}
+  const routes: RouteObject[] = [
+    {
+      path: '/',
+      element: <Layout />,
+      children: [
+        { index: true, element: <Home /> },
+        {
+          path: '/courses',
+          element: <Courses />,
+          children: [
+            { index: true, element: <CoursesIndex /> },
+            { path: '/courses/:id', element: <Course /> }
+          ]
+        },
+        { path: '*', element: <NoMatch /> }
+      ]
+    }
+  ];
 
-export function sleep(n: number = 500) {
-  return new Promise((r) => setTimeout(r, n));
-}
-
-export function Fallback() {
-  return <p>Performing initial data load</p>;
-}
-
-// Layout
-export function Layout() {
-  const navigation = useNavigation();
-  const revalidator = useRevalidator();
-  const fetchers = useFetchers();
-  const fetcherInProgress = fetchers.some((f) =>
-    ['loading', 'submitting'].includes(f.state)
-  );
+  // The useRoutes() hook allows you to define your routes as JavaScript objects
+  // instead of <Routes> and <Route> elements. This is really just a style
+  // preference for those who prefer to not use JSX for their routes config.
+  const element = useRoutes(routes);
 
   return (
-    <>
-      <h1>Data Router Example</h1>
+    <div>
+      <h1>Route Objects Example</h1>
 
       <p>
-        This example demonstrates some of the core features of React Router
-        including nested &lt;Route&gt;s, &lt;Outlet&gt;s, &lt;Link&gt;s, and
-        using a &quot;*&quot; route (aka &quot;splat route&quot;) to render a
-        &quot;not found&quot; page when someone visits an unrecognized URL.
+        This example demonstrates how to use React Router's "route object" API
+        instead of the JSX API to configure your routes. Both APIs are
+        first-class. In fact, React Router actually uses the object-based API
+        internally by creating route objects from your{' '}
+        <code>&lt;Route&gt;</code>
+        elements.
       </p>
 
+      <p>
+        React Router exposes a <code>useRoutes()</code> hook that allows you to
+        hook into the same matching algorithm that <code>&lt;Routes&gt;</code>{' '}
+        uses internally to decide which <code>&lt;Route&gt;</code> to render.
+        When you use this hook, you get back an element that will render your
+        entire route hierarchy.
+      </p>
+
+      {element}
+    </div>
+  );
+}
+
+function Layout() {
+  return (
+    <div>
       <nav>
         <ul>
           <li>
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/todos">Todos</Link>
+            <Link to="/courses">Courses</Link>
           </li>
           <li>
-            <Link to="/deferred">Deferred</Link>
-          </li>
-          <li>
-            <Link to="/404">404 Link</Link>
-          </li>
-          <li>
-            <button onClick={() => revalidator.revalidate()}>
-              Revalidate Data
-            </button>
+            <Link to="/nothing-here">Nothing Here</Link>
           </li>
         </ul>
       </nav>
-      <div style={{ position: 'fixed', top: 0, right: 0 }}>
-        {navigation.state !== 'idle' && <p>Navigation in progress...</p>}
-        {revalidator.state !== 'idle' && <p>Revalidation in progress...</p>}
-        {fetcherInProgress && <p>Fetcher in progress...</p>}
-      </div>
-      <p>
-        Click on over to <Link to="/todos">/todos</Link> and check out these
-        data loading APIs!
-      </p>
-      <p>
-        Or, checkout <Link to="/deferred">/deferred</Link> to see how to
-        separate critical and lazily loaded data in your loaders.
-      </p>
-      <p>
-        We&apos;ve introduced some fake async-aspects of routing here, so Keep
-        an eye on the top-right hand corner to see when we&apos;re actively
-        navigating.
-      </p>
+
       <hr />
+
       <Outlet />
-    </>
-  );
-}
-
-// Home
-interface HomeLoaderData {
-  date: string;
-}
-
-export async function homeLoader(): Promise<HomeLoaderData> {
-  await sleep();
-  return {
-    date: new Date().toISOString()
-  };
-}
-
-export function Home() {
-  const data = useLoaderData() as HomeLoaderData;
-  return (
-    <>
-      <h2>Home</h2>
-      <p>Date from loader: {data.date}</p>
-    </>
-  );
-}
-
-// Todos
-export async function todosAction({ request }: ActionFunctionArgs) {
-  await sleep();
-
-  const formData = await request.formData();
-
-  // Deletion via fetcher
-  if (formData.get('action') === 'delete') {
-    const id = formData.get('todoId');
-    if (typeof id === 'string') {
-      deleteTodo(id);
-      return { ok: true };
-    }
-  }
-
-  // Addition via <Form>
-  const todo = formData.get('todo');
-  if (typeof todo === 'string') {
-    addTodo(todo);
-  }
-
-  return new Response(null, {
-    status: 302,
-    headers: { Location: '/todos' }
-  });
-}
-
-export async function todosLoader(): Promise<Todos> {
-  await sleep();
-  return getTodos();
-}
-
-export function TodosList() {
-  const todos = useLoaderData() as Todos;
-  const navigation = useNavigation();
-  const formRef = React.useRef<HTMLFormElement>(null);
-
-  // If we add and then we delete - this will keep isAdding=true until the
-  // fetcher completes it's revalidation
-  const [isAdding, setIsAdding] = React.useState(false);
-  React.useEffect(() => {
-    if (navigation.formData?.get('action') === 'add') {
-      setIsAdding(true);
-    } else if (navigation.state === 'idle') {
-      setIsAdding(false);
-      formRef.current?.reset();
-    }
-  }, [navigation]);
-
-  return (
-    <>
-      <h2>Todos</h2>
-      <p>
-        This todo app uses a &lt;Form&gt; to submit new todos and a
-        &lt;fetcher.form&gt; to delete todos. Click on a todo item to navigate
-        to the /todos/:id route.
-      </p>
-      <ul>
-        <li>
-          <Link to="/todos/junk">
-            Click this link to force an error in the loader
-          </Link>
-        </li>
-        {Object.entries(todos).map(([id, todo]) => (
-          <li key={id}>
-            <TodoItem id={id} todo={todo} />
-          </li>
-        ))}
-      </ul>
-      <Form method="post" ref={formRef}>
-        <input type="hidden" name="action" value="add" />
-        <input name="todo"></input>
-        <button type="submit" disabled={isAdding}>
-          {isAdding ? 'Adding...' : 'Add'}
-        </button>
-      </Form>
-      <Outlet />
-    </>
-  );
-}
-
-export function TodosBoundary() {
-  const error = useRouteError() as Error;
-  return (
-    <>
-      <h2>Error 💥</h2>
-      <p>{error.message}</p>
-    </>
-  );
-}
-
-interface TodoItemProps {
-  id: string;
-  todo: string;
-}
-
-export function TodoItem({ id, todo }: TodoItemProps) {
-  const fetcher = useFetcher();
-
-  const isDeleting = fetcher.formData != null;
-  return (
-    <>
-      <Link to={`/todos/${id}`}>{todo}</Link>
-      &nbsp;
-      <fetcher.Form method="post" style={{ display: 'inline' }}>
-        <input type="hidden" name="action" value="delete" />
-        <button type="submit" name="todoId" value={id} disabled={isDeleting}>
-          {isDeleting ? 'Deleting...' : 'Delete'}
-        </button>
-      </fetcher.Form>
-    </>
-  );
-}
-
-// Todo
-export async function todoLoader({
-  params
-}: LoaderFunctionArgs): Promise<string> {
-  await sleep();
-  const todos = getTodos();
-  if (!params.id) {
-    throw new Error('Expected params.id');
-  }
-  const todo = todos[params.id];
-  if (!todo) {
-    throw new Error(`Uh oh, I couldn't find a todo with id "${params.id}"`);
-  }
-  return todo;
-}
-
-export function Todo() {
-  const params = useParams();
-  const todo = useLoaderData() as string;
-  return (
-    <>
-      <h2>Nested Todo Route:</h2>
-      <p>id: {params.id}</p>
-      <p>todo: {todo}</p>
-    </>
-  );
-}
-
-// Deferred Data
-interface DeferredRouteLoaderData {
-  critical1: string;
-  critical2: string;
-  lazyResolved: Promise<string>;
-  lazy1: Promise<string>;
-  lazy2: Promise<string>;
-  lazy3: Promise<string>;
-  lazyError: Promise<string>;
-}
-
-const rand = () => Math.round(Math.random() * 100);
-const resolve = (d: string, ms: number) =>
-  new Promise((r) => setTimeout(() => r(`${d} - ${rand()}`), ms));
-const reject = (d: Error | string, ms: number) =>
-  new Promise((_, r) =>
-    setTimeout(() => {
-      if (d instanceof Error) {
-        d.message += ` - ${rand()}`;
-      } else {
-        d += ` - ${rand()}`;
-      }
-      r(d);
-    }, ms)
-  );
-
-export async function deferredLoader() {
-  return defer({
-    critical1: await resolve('Critical 1', 250),
-    critical2: await resolve('Critical 2', 500),
-    lazyResolved: Promise.resolve('Lazy Data immediately resolved - ' + rand()),
-    lazy1: resolve('Lazy 1', 1000),
-    lazy2: resolve('Lazy 2', 1500),
-    lazy3: resolve('Lazy 3', 2000),
-    lazyError: reject(new Error('Kaboom!'), 2500)
-  });
-}
-
-export function DeferredPage() {
-  const data = useLoaderData() as DeferredRouteLoaderData;
-  return (
-    <div>
-      {/* Critical data renders immediately */}
-      <p>{data.critical1}</p>
-      <p>{data.critical2}</p>
-
-      {/* Pre-resolved deferred data never triggers the fallback */}
-      <React.Suspense fallback={<p>should not see me!</p>}>
-        <Await resolve={data.lazyResolved}>
-          <RenderAwaitedData />
-        </Await>
-      </React.Suspense>
-
-      {/* Deferred data can be rendered using a component + the useAsyncValue() hook */}
-      <React.Suspense fallback={<p>loading 1...</p>}>
-        <Await resolve={data.lazy1}>
-          <RenderAwaitedData />
-        </Await>
-      </React.Suspense>
-
-      <React.Suspense fallback={<p>loading 2...</p>}>
-        <Await resolve={data.lazy2}>
-          <RenderAwaitedData />
-        </Await>
-      </React.Suspense>
-
-      {/* Or you can bypass the hook and use a render function */}
-      <React.Suspense fallback={<p>loading 3...</p>}>
-        <Await resolve={data.lazy3}>{(data: string) => <p>{data}</p>}</Await>
-      </React.Suspense>
-
-      {/* Deferred rejections render using the useAsyncError hook */}
-      <React.Suspense fallback={<p>loading (error)...</p>}>
-        <Await resolve={data.lazyError} errorElement={<RenderAwaitedError />}>
-          <RenderAwaitedData />
-        </Await>
-      </React.Suspense>
     </div>
   );
 }
 
-function RenderAwaitedData() {
-  const data = useAsyncValue() as string;
-  return <p>{data}</p>;
+function Home() {
+  return (
+    <div>
+      <h2>Home</h2>
+    </div>
+  );
 }
 
-function RenderAwaitedError() {
-  const error = useAsyncError() as Error;
+function Courses() {
   return (
-    <p style={{ color: 'red' }}>
-      Error (errorElement)!
-      <br />
-      {error.message} {error.stack}
-    </p>
+    <div>
+      <h2>Courses</h2>
+      <Outlet />
+    </div>
+  );
+}
+
+function CoursesIndex() {
+  return (
+    <div>
+      <p>Please choose a course:</p>
+
+      <nav>
+        <ul>
+          <li>
+            <Link to="react-fundamentals">React Fundamentals</Link>
+          </li>
+          <li>
+            <Link to="advanced-react">Advanced React</Link>
+          </li>
+          <li>
+            <Link to="react-router">React Router</Link>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  );
+}
+
+function Course() {
+  const { id } = useParams<'id'>();
+
+  return (
+    <div>
+      <h2>
+        Welcome to the {id!.split('-').map(capitalizeString).join(' ')} course!
+      </h2>
+
+      <p>This is a great course. You're gonna love it!</p>
+
+      <Link to="/courses">See all courses</Link>
+    </div>
+  );
+}
+
+function capitalizeString(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function NoMatch() {
+  return (
+    <div>
+      <h2>It looks like you're lost...</h2>
+      <p>
+        <Link to="/">Go to the home page</Link>
+      </p>
+    </div>
   );
 }
