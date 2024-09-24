@@ -1,8 +1,8 @@
 import 'index.css';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-// import 'tailwindcss/tailwind.css';
 import { RouterProvider } from 'react-router-dom';
+import 'tailwindcss/tailwind.css';
 import appRouter from './router';
 
 const container = document.getElementById('root') as HTMLDivElement;
