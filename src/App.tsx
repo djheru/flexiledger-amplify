@@ -1,6 +1,6 @@
-import { Navbar } from '@/components/navbar';
-import { Sidebar } from '@/components/sidebar';
-import { StackedLayout } from '@/components/stacked-layout';
+import { Navbar } from '@/components/catalyst/navbar';
+import { Sidebar } from '@/components/catalyst/sidebar';
+import { StackedLayout } from '@/components/catalyst/stacked-layout';
 import { Outlet } from 'react-router-dom';
 
 export async function appAction() {
