@@ -6,7 +6,7 @@ import {
   redirect,
   useLoaderData,
   useNavigation,
-  useSubmit
+  useSubmit,
 } from 'react-router-dom';
 import { createContact, getContacts } from '../contacts';
 
@@ -50,7 +50,7 @@ export default function Root() {
               onChange={(e) => {
                 const isFirstSearch = q == null;
                 submit(e.currentTarget.form, {
-                  replace: !isFirstSearch
+                  replace: !isFirstSearch,
                 });
               }}
               className={isSearching ? 'loading' : ''}
