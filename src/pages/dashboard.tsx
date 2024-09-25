@@ -1,7 +1,7 @@
-import { Select } from '@headlessui/react';
 import { Badge } from '../components/catalyst/badge';
 import { Divider } from '../components/catalyst/divider';
 import { Heading, Subheading } from '../components/catalyst/heading';
+import { Select } from '../components/catalyst/select';
 
 export async function dashboardAction() {
   console.log('dashboardAction');

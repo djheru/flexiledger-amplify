@@ -68,7 +68,7 @@ function AppNavbar() {
   return (
     <Navbar>
       <Avatar src="/tailwind-logo.svg" />
-      <NavbarLabel>Tailwind Labs</NavbarLabel>{' '}
+      <NavbarLabel>FlexiLedger</NavbarLabel>{' '}
       <NavbarDivider className="mx-4 max-lg:hidden" />
       <NavbarSection className="max-lg:hidden">
         {navItems.main.map(({ label, url }) => (
