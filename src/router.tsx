@@ -1,7 +1,6 @@
 import 'index.css';
 // import 'tailwindcss/tailwind.css';
 import { createBrowserRouter } from 'react-router-dom';
-import { App, appAction, appLoader } from './App';
 import {
   Account,
   accountAction,
@@ -9,6 +8,7 @@ import {
   accountRemoveAction,
 } from './pages/account';
 import { AccountsPage, accountsAction, accountsLoader } from './pages/accounts';
+import { App, appAction, appLoader } from './pages/app';
 import {
   DashboardPage,
   dashboardAction,

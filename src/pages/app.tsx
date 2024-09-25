@@ -20,7 +20,7 @@ import {
   UserIcon,
 } from '@heroicons/react/16/solid';
 import { Outlet } from 'react-router-dom';
-import { Avatar } from './components/catalyst/avatar';
+import { Avatar } from '../components/catalyst/avatar';
 import {
   Dropdown,
   DropdownButton,
@@ -28,7 +28,7 @@ import {
   DropdownItem,
   DropdownLabel,
   DropdownMenu,
-} from './components/catalyst/dropdown';
+} from '../components/catalyst/dropdown';
 
 export async function appAction() {
   return null;
