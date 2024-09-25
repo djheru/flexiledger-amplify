@@ -1,8 +1,10 @@
 export async function accountsAction() {
+  console.log('accountsAction');
   return null;
 }
 
 export async function accountsLoader() {
+  console.log('accountsLoader');
   return null;
 }
 

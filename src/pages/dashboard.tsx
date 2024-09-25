@@ -4,10 +4,12 @@ import { Divider } from '../components/catalyst/divider';
 import { Heading, Subheading } from '../components/catalyst/heading';
 
 export async function dashboardAction() {
+  console.log('dashboardAction');
   return null;
 }
 
 export async function dashboardLoader() {
+  console.log('dashboardLoader');
   return null;
 }
 
