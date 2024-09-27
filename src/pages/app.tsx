@@ -159,7 +159,7 @@ const components = {
       return (
         <Heading
           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
+          level={4}
         >
           Sign in to your account
         </Heading>
