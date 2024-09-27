@@ -9,6 +9,7 @@ import {
 import { Sidebar } from '@/components/catalyst/sidebar';
 import { StackedLayout } from '@/components/catalyst/stacked-layout';
 import {
+  Authenticator,
   Button,
   Heading,
   Image,
@@ -75,9 +76,9 @@ const navItems = {
 
 function AppNavbar() {
   return (
-    <Navbar>
-      <Avatar className="size-8" src="/logo.svg" />
-      <NavbarLabel>FlexiLedger</NavbarLabel>{' '}
+    <Navbar className="gap-1">
+      <Image src="/logo-small.svg" alt="Flexiledger logo" />
+      <NavbarLabel className="text-lg font-bold">FlexiLedger</NavbarLabel>{' '}
       <NavbarDivider className="mx-4 max-lg:hidden" />
       <NavbarSection className="max-lg:hidden">
         {navItems.main.map(({ label, url }) => (
@@ -129,8 +130,12 @@ const components = {
     const { tokens } = useTheme();
 
     return (
-      <View textAlign="center" padding={tokens.space.large}>
-        <Image alt="Amplify logo" src="/logo-full.svg" />
+      <View textAlign="center" padding={tokens.space.medium}>
+        <Image
+          className="size-72"
+          alt="Flexiledger logo"
+          src="/logo-full.svg"
+        />
       </View>
     );
   },
@@ -348,26 +353,26 @@ const formFields = {
   },
 };
 
-// export function App() {
-//   return (
-//     <Authenticator formFields={formFields} components={components}>
-//       <StackedLayout
-//         navbar={<AppNavbar />}
-//         sidebar={<Sidebar>{/* Your sidebar content */}</Sidebar>}
-//       >
-//         <Outlet />
-//       </StackedLayout>
-//     </Authenticator>
-//   );
-// }
-
 export function App() {
   return (
-    <StackedLayout
-      navbar={<AppNavbar />}
-      sidebar={<Sidebar>{/* Your sidebar content */}</Sidebar>}
-    >
-      <Outlet />
-    </StackedLayout>
+    <Authenticator formFields={formFields} components={components}>
+      <StackedLayout
+        navbar={<AppNavbar />}
+        sidebar={<Sidebar>{/* Your sidebar content */}</Sidebar>}
+      >
+        <Outlet />
+      </StackedLayout>
+    </Authenticator>
   );
 }
+
+// export function App() {
+//   return (
+//     <StackedLayout
+//       navbar={<AppNavbar />}
+//       sidebar={<Sidebar>{/* Your sidebar content */}</Sidebar>}
+//     >
+//       <Outlet />
+//     </StackedLayout>
+//   );
+// }

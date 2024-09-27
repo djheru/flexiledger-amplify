@@ -10,11 +10,11 @@ body {
   :root {
     --amplify-colors-neutral-100: theme('colors.neutral.900');
     --amplify-colors-neutral-80: theme('colors.neutral.800');
-    --amplify-colors-green-60: theme('colors.green.600');
-    --amplify-colors-green-80: theme('colors.green.800');
-    --amplify-colors-green-100: theme('colors.green.900');
+    --amplify-colors-orange-60: theme('colors.orange.600');
+    --amplify-colors-orange-80: theme('colors.orange.800');
+    --amplify-colors-orange-100: theme('colors.orange.900');
     --amplify-components-button-primary-hover-background-color: theme(
-      'colors.green.900'
+      'colors.orange.900'
     );
   }
 }
@@ -29,11 +29,11 @@ body {
     --amplify-colors-neutral-100
   );
   --amplify-components-fieldcontrol-focus-box-shadow: 0 0 0 2px
-    var(--amplify-colors-green-60);
+    var(--amplify-colors-orange-60);
   --amplify-components-tabs-item-active-border-color: var(
     --amplify-colors-neutral-100
   );
   --amplify-components-tabs-item-color: var(--amplify-colors-neutral-80);
-  --amplify-components-tabs-item-active-color: var(--amplify-colors-green-100);
-  --amplify-components-button-link-color: var(--amplify-colors-green-80);
+  --amplify-components-tabs-item-active-color: var(--amplify-colors-orange-100);
+  --amplify-components-button-link-color: var(--amplify-colors-orange-80);
 }
