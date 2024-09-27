@@ -9,7 +9,6 @@ import {
 import { Sidebar } from '@/components/catalyst/sidebar';
 import { StackedLayout } from '@/components/catalyst/stacked-layout';
 import {
-  Authenticator,
   Button,
   Heading,
   Image,
@@ -77,7 +76,7 @@ const navItems = {
 function AppNavbar() {
   return (
     <Navbar>
-      <Avatar src="/tailwind-logo.svg" />
+      <Avatar className="size-8" src="/logo.svg" />
       <NavbarLabel>FlexiLedger</NavbarLabel>{' '}
       <NavbarDivider className="mx-4 max-lg:hidden" />
       <NavbarSection className="max-lg:hidden">
@@ -131,7 +130,7 @@ const components = {
 
     return (
       <View textAlign="center" padding={tokens.space.large}>
-        <Image alt="Amplify logo" src="/logo.svg" />
+        <Image alt="Amplify logo" src="/logo-full.svg" />
       </View>
     );
   },
@@ -349,15 +348,26 @@ const formFields = {
   },
 };
 
+// export function App() {
+//   return (
+//     <Authenticator formFields={formFields} components={components}>
+//       <StackedLayout
+//         navbar={<AppNavbar />}
+//         sidebar={<Sidebar>{/* Your sidebar content */}</Sidebar>}
+//       >
+//         <Outlet />
+//       </StackedLayout>
+//     </Authenticator>
+//   );
+// }
+
 export function App() {
   return (
-    <Authenticator formFields={formFields} components={components}>
-      <StackedLayout
-        navbar={<AppNavbar />}
-        sidebar={<Sidebar>{/* Your sidebar content */}</Sidebar>}
-      >
-        <Outlet />
-      </StackedLayout>
-    </Authenticator>
+    <StackedLayout
+      navbar={<AppNavbar />}
+      sidebar={<Sidebar>{/* Your sidebar content */}</Sidebar>}
+    >
+      <Outlet />
+    </StackedLayout>
   );
 }
