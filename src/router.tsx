@@ -16,12 +16,15 @@ import {
 } from './pages/dashboard';
 import ErrorPage from './pages/error';
 import { ExpensesPage, expensesAction, expensesLoader } from './pages/expenses';
+import { PrivacyPolicy } from './pages/privacy-policy';
 import {
   ProfilePage,
   profileAction,
   profileCategoryRemoveAction,
   profileLoader,
 } from './pages/profile';
+import { ShareFeedback } from './pages/share-feedback';
+import { TermsOfService } from './pages/terms-of-service';
 
 export default createBrowserRouter([
   {
@@ -82,6 +85,18 @@ export default createBrowserRouter([
             path: 'profile/:categoryId/remove',
             action: profileCategoryRemoveAction, // Remove a category from user profile
             errorElement: <div>Oops! There was an error.</div>,
+          },
+          {
+            path: 'terms-of-service',
+            element: <TermsOfService />,
+          },
+          {
+            path: 'privacy-policy',
+            element: <PrivacyPolicy />,
+          },
+          {
+            path: 'share-feedback',
+            element: <ShareFeedback />,
           },
         ],
       },
