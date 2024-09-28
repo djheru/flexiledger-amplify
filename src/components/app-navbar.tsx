@@ -24,6 +24,7 @@ import {
 } from '@heroicons/react/16/solid';
 import { AuthUser } from 'aws-amplify/auth';
 import { NavItems } from '../pages/app';
+import { Link } from './catalyst/link';
 
 export type AppNavbarProps = {
   navItems: NavItems;
@@ -33,10 +34,18 @@ export type AppNavbarProps = {
 
 export function AppNavbar({ navItems, signOut, user }: AppNavbarProps) {
   return (
-    <Navbar className="gap-1">
-      <Image src="/logo-small.svg" alt="Flexiledger logo" />
-      <NavbarLabel className="text-lg font-bold">FlexiLedger</NavbarLabel>{' '}
-      <NavbarDivider className="ml-4 mr-0 max-lg:hidden" />
+    <Navbar className="gap-0">
+      <Link href="/" aria-label="home">
+        <Image
+          className="mt-1 size-10"
+          src="/logo-small.svg"
+          alt="Flexiledger logo"
+        />
+      </Link>
+      <NavbarLabel className="mb-2 ml-2 text-xl font-bold">
+        FlexiLedger
+      </NavbarLabel>
+      <NavbarDivider className="ml-10 mr-2 max-lg:hidden" />
       <NavbarSection className="max-lg:hidden">
         {navItems.main.map(({ icon, label, url }) => (
           <>

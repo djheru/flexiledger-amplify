@@ -60,7 +60,7 @@ export function AppSidebar({ navItems, signOut, user }: AppNavbarProps) {
           <DropdownButton plain>
             <UserCircleIcon />
             {user?.signInDetails?.loginId ? (
-              <span className="text-xs">{user?.signInDetails?.loginId}</span>
+              <span className="text-sm">{user?.signInDetails?.loginId}</span>
             ) : null}
             <ChevronDownIcon />
           </DropdownButton>
