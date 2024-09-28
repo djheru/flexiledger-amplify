@@ -298,19 +298,28 @@ const components = {
 const formFields = {
   signIn: {
     username: {
-      placeholder: 'Enter your email',
+      placeholder: 'Enter your email address',
+      order: 1,
+    },
+    password: {
+      placeholder: 'Enter your password',
+      order: 2,
     },
   },
   signUp: {
+    email: {
+      placeholder: 'Enter your email address',
+      order: 1,
+    },
     password: {
       label: 'Password:',
-      placeholder: 'Enter your Password:',
+      placeholder: 'Enter your password:',
       isRequired: false,
       order: 2,
     },
     confirm_password: {
-      label: 'Confirm Password:',
-      order: 1,
+      label: 'Confirm password:',
+      order: 3,
     },
   },
   forceNewPassword: {
@@ -320,7 +329,7 @@ const formFields = {
   },
   forgotPassword: {
     username: {
-      placeholder: 'Enter your email:',
+      placeholder: 'Enter your email',
     },
   },
   confirmResetPassword: {
