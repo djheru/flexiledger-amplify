@@ -8,7 +8,8 @@ export const auth = defineAuth({
   loginWith: {
     email: {
       verificationEmailStyle: 'CODE',
-      verificationEmailSubject: 'Welcome to the FlexiLedger!',
+      verificationEmailSubject:
+        'Welcome to FlexiLedger personal finance software!',
       verificationEmailBody: (createCode) =>
         `Use this code to confirm your account: ${createCode()}`,
     },

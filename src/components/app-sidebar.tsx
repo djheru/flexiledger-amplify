@@ -6,56 +6,56 @@ import {
   DropdownLabel,
   DropdownMenu,
 } from '@/components/catalyst/dropdown';
-import {
-  Navbar,
-  NavbarDivider,
-  NavbarItem,
-  NavbarLabel,
-  NavbarSection,
-  NavbarSpacer,
-} from '@/components/catalyst/navbar';
-import { Image, UseAuthenticator } from '@aws-amplify/ui-react';
+import { Image } from '@aws-amplify/ui-react';
 import {
   ArrowRightStartOnRectangleIcon,
   ChevronDownIcon,
-  InboxIcon,
-  MagnifyingGlassIcon,
   UserCircleIcon,
 } from '@heroicons/react/16/solid';
-import { AuthUser } from 'aws-amplify/auth';
-import { NavItems } from '../pages/app';
+import { AppNavbarProps } from './app-navbar';
+import {
+  Sidebar,
+  SidebarBody,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarItem,
+  SidebarLabel,
+  SidebarSection,
+} from './catalyst/sidebar';
 
-export type AppNavbarProps = {
-  navItems: NavItems;
-  signOut: UseAuthenticator['signOut'] | undefined;
-  user?: AuthUser;
-};
-
-export function AppNavbar({ navItems, signOut, user }: AppNavbarProps) {
+export function AppSidebar({ navItems, signOut, user }: AppNavbarProps) {
   return (
-    <Navbar className="gap-1">
-      <Image src="/logo-small.svg" alt="Flexiledger logo" />
-      <NavbarLabel className="text-lg font-bold">FlexiLedger</NavbarLabel>{' '}
-      <NavbarDivider className="ml-4 mr-0 max-lg:hidden" />
-      <NavbarSection className="max-lg:hidden">
-        {navItems.main.map(({ icon, label, url }) => (
-          <>
-            <NavbarItem key={label} href={url}>
+    <Sidebar className="">
+      <SidebarHeader>
+        <SidebarLabel className="text-lg font-bold">
+          <Image
+            className="mr-2 size-8"
+            src="/logo-small.svg"
+            alt="Flexiledger logo sidebar"
+          />
+          <span className="align-top">FlexiLedger</span>
+        </SidebarLabel>
+      </SidebarHeader>
+      <SidebarBody>
+        <SidebarSection>
+          {navItems.main.map(({ icon, label, url }) => (
+            <SidebarItem key={label} href={url}>
               {icon ? icon : null}
-              <NavbarLabel className="font-semibold">{label}</NavbarLabel>
-            </NavbarItem>
-            <NavbarDivider className="mx-0 max-lg:hidden" />
-          </>
-        ))}
-      </NavbarSection>
-      <NavbarSpacer />
-      <NavbarSection className="max-md:hidden">
-        <NavbarItem href="/search" aria-label="Search">
-          <MagnifyingGlassIcon />
-        </NavbarItem>
-        <NavbarItem href="/inbox" aria-label="Inbox">
-          <InboxIcon />
-        </NavbarItem>
+              <SidebarLabel className="font-semibold">{label}</SidebarLabel>
+            </SidebarItem>
+          ))}
+        </SidebarSection>
+
+        <SidebarSection>
+          {navItems.util.map(({ label, icon, url }) => (
+            <SidebarItem className="text-left" key={label} href={url}>
+              {icon ? icon : null}
+              <SidebarLabel className="text-xs">{label}</SidebarLabel>
+            </SidebarItem>
+          ))}
+        </SidebarSection>
+      </SidebarBody>
+      <SidebarFooter>
         <Dropdown>
           <DropdownButton plain>
             <UserCircleIcon />
@@ -85,7 +85,7 @@ export function AppNavbar({ navItems, signOut, user }: AppNavbarProps) {
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
-      </NavbarSection>
-    </Navbar>
+      </SidebarFooter>
+    </Sidebar>
   );
 }
