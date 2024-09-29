@@ -12,7 +12,6 @@ import {
   ChevronDownIcon,
   UserCircleIcon,
 } from '@heroicons/react/16/solid';
-import { AppNavbarProps } from './app-navbar';
 import {
   Sidebar,
   SidebarBody,
@@ -21,7 +20,8 @@ import {
   SidebarItem,
   SidebarLabel,
   SidebarSection,
-} from './catalyst/sidebar';
+} from '../catalyst/sidebar';
+import { AppNavbarProps } from './app-navbar';
 
 export function AppSidebar({ navItems, signOut, user }: AppNavbarProps) {
   return (

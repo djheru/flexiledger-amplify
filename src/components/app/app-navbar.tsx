@@ -23,8 +23,8 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/16/solid';
 import { AuthUser } from 'aws-amplify/auth';
-import { NavItems } from '../pages/app';
-import { Link } from './catalyst/link';
+import { NavItems } from '../../pages/app';
+import { Link } from '../catalyst/link';
 
 export type AppNavbarProps = {
   navItems: NavItems;
