@@ -8,7 +8,7 @@ import {
 } from '@heroicons/react/20/solid';
 import { Heading } from '../components/catalyst/heading';
 import { Select } from '../components/catalyst/select';
-import { Stat } from '../components/dashboard/stat';
+import { Stat } from '../components/shared/stat';
 import { classNames } from '../utils';
 
 const statuses: Record<string, string> = {

@@ -12,9 +12,9 @@ import {
   UserIcon,
 } from '@heroicons/react/16/solid';
 import { Outlet } from 'react-router-dom';
-import { AppNavbar } from '../components/app/app-navbar';
-import { AppSidebar } from '../components/app/app-sidebar';
-import { authComponents, authFormFields } from '../components/app/auth';
+import { AppNavbar } from '../components/shared/app-navbar';
+import { AppSidebar } from '../components/shared/app-sidebar';
+import { authComponents, authFormFields } from '../components/shared/auth';
 
 type NavItem = {
   label: string;
